@@ -3,7 +3,6 @@ CSV to REST API
 
 Pass a CSV file to the program as argument, and the program results in a nice
 REST API which can paginate, order and filter data.
-
 Plus it supports redundancy-type high availability using a reverse proxy,
 fallbacking to different socket files.
 
@@ -15,7 +14,7 @@ Create a simple REST API socket file from a CSV file.
 
 positional arguments:
   csv         Path of the CSV to open
-  blueprint   Path of the blueprint Yaml about the CSV
+  blueprint   Path of the blueprint JSON file about the CSV
   socketfile  Path where to create the socket file
 
 optional arguments:
@@ -48,6 +47,7 @@ And the exam was missing a point that I consider important :
 - Security
   - High availability
   - Pagination limiting
+  - Rate limiting (`limit_req` from Nginx reverse-proxy)
 
 
 Installation procedure
@@ -72,7 +72,7 @@ can be later reverse-proxied using Nginx and such.
 ```bash
 csv2rest \
     ~/tvshow_views.csv \
-    ~/tvshow_views.yml \
+    ~/tvshow_views.json \
     ~/tvshow_views.sock
 ```
 
@@ -94,25 +94,37 @@ by the reverse proxy server.
 Editing the blueprint
 ---------------------
 
-The blueprint is a Yaml file which gives extra information about
+The blueprint is a JSON file which gives extra information about
 the CSV file format and its columns types.
 
-```yaml
-has_header: true
-delimiter: ,
-quotechar: null
-columns:
-  - name: id
-    type: string
-  - name: provider
-    type: string
-  - name: title
-    type: string
-    strip: true
-  - name: views
-    type: integer
-security:
-    max_n_row: 100
+```json
+{
+    "has_header": true,
+    "delimiter": ",",
+    "quotechar": "",
+    "columns": [
+        {
+            "name": "id",
+            "type": "string"
+        },
+        {
+            "name": "provider",
+            "type": "string"
+        },
+        {
+            "name": "title",
+            "type": "string",
+            "strip": true
+        },
+        {
+            "name": "views",
+            "type": "integer"
+        }
+    ],
+    "security": {
+        "max_n_row": 100
+    }
+}
 ```
 
 The columns orders in the blueprint must represent the same order as of inside
