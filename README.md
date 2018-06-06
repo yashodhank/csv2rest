@@ -121,9 +121,6 @@ the CSV file format and its columns types.
             "type": "integer"
         }
     ],
-    "security": {
-        "max_n_row": 100
-    }
 }
 ```
 
@@ -137,10 +134,6 @@ When the type of the column is a `string`, the `strip` parameter is to trim
 both the begin and the end of the string if needed. Is optional and if not
 specified, defaults at `false`. Enabling this feature can greatly decrease
 performances.
-
-The `max_n_row` option is the maximum rows that can be queried by the client
-per page. This can help to prevent some kinds of denial of service by
-avoiding intensive CPU and memory usage.
 
 We recommend using a `string` type when the column is a hash, because its
 way lighter to compare few `char` than to compare a whole n bits hash.
