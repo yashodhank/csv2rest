@@ -4,17 +4,34 @@ CSV to REST API
 Pass a CSV file to the program as argument, and the program results in a nice
 REST API which can paginate, order and filter data.
 
-Plus it supports redudancy-type high availability using a reverse proxy,
+Plus it supports redundancy-type high availability using a reverse proxy,
 fallbacking to different socket files.
+
+```
+$ csv2rest -h
+usage: csv2rest [-h] csv blueprint socketfile
+
+Create a simple REST API socket file from a CSV file.
+
+positional arguments:
+  csv         Path of the CSV to open
+  blueprint   Path of the blueprint Yaml about the CSV
+  socketfile  Path where to create the socket file
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
 
 
 Preamble
 --------
 
 I made this project as a proof of skill for a job interview.
+It can be considered as production ready.
 
-This project cannot be considered as production ready, since the exam requires
-us to **not use a real database engine**, which is very disappointing.
+I applied for a Java developer job, but we had the choice of the language,
+so I decided to write this project in Python3 since its a very simple project.
+Java would be super overkill in this case.
 
 As required, I respected all those points :
 
@@ -26,6 +43,24 @@ As required, I respected all those points :
 - Documentation (this friendly README filled with examples)
 - Not using a real database engine
 
+And the exam was missing a point that I consider important :
+
+- Security
+  - High availability
+  - Pagination limiting
+
+
+Installation procedure
+----------------------
+
+Python3.6 is required since this project is targeted for production systems
+and not directly for consumers.
+
+Just type this simple command then you're ready to use `csv2rest`.
+
+```bash
+pip3 install git+https://github.com/dctremblay/csv2rest.git@master
+```
 
 
 Launch the server
@@ -36,13 +71,13 @@ can be later reverse-proxied using Nginx and such.
 
 ```bash
 csv2rest \
-    --csv ~/tvshow_views.csv \
-    --blueprint ~/tvshow_views.yml \
-    --socket ~/tvshow_views.sock
+    ~/tvshow_views.csv \
+    ~/tvshow_views.yml \
+    ~/tvshow_views.sock
 ```
 
-All the program parameters are shown in this example, which are simply :
-`csv`, `blueprint` and `socket`.
+All the program positional arguments are shown in this example,
+which are simply :`csv`, `blueprint` and `socket`.
 
 
 High availability
@@ -76,15 +111,24 @@ columns:
     strip: true
   - name: views
     type: integer
+security:
+    max_n_row: 100
 ```
 
 The columns orders in the blueprint must represent the same order as of inside
-the CSV file. The `type` value can be whether `integer` or `string`.
+the CSV file. The `type` value can be `disabled`, `integer` or `string`.
+
+If the `type` is set to `disabled`, no other options, such as `name` is
+required. This will cause this field to be completely ignored.
 
 When the type of the column is a `string`, the `strip` parameter is to trim
 both the begin and the end of the string if needed. Is optional and if not
 specified, defaults at `false`. Enabling this feature can greatly decrease
 performances.
+
+The `max_n_row` option is the maximum rows that can be queried by the client
+per page. This can help to prevent some kinds of denial of service by
+avoiding intensive CPU and memory usage.
 
 We recommend using a `string` type when the column is a hash, because its
 way lighter to compare few `char` than to compare a whole n bits hash.
@@ -95,7 +139,7 @@ Querying REST API
 
 ### Pagination
 
-`n_row_per_page` is an integer which is optional and defaults at `1`.
+`page_n_row` is an integer which is optional and defaults at `1`.
 
 `page_no` is an integer which is optional, begins and defaults at `0`.
 
@@ -117,10 +161,10 @@ Querying REST API
 in the future using a JSON DOM Query filter style.
 
 `filter_col` is a string, the name of the column to filter, which is optional.
-`filter_val` is a string or integer, is optional and defaults at `not null`.
+It must be the column name as shown in the blueprint, **and not** in the
+CSV header, which is completely ignored.
 
-The `filter_col` value must be the column name as shown in the blueprint,
-**and not** in the CSV header, which is completely ignored.
+`filter_val` is a string or integer, is optional and defaults at `is not null`.
 
 
 JSON REST API Querying examples
@@ -131,11 +175,11 @@ and the number of views during the previous day.
 
 The columns are : `id`, `provider`, `title`, `views`.
 
-**Fetch the top 10 most watched TV shows for a specific provider :**
+**Top 10 most watched TV shows for a specific provider :**
 
 ```json
 {
-    "n_row_per_page": 10,
+    "page_n_row": 10,
     "sort_col": "views",
     "sort_order": -1,
     "filter_col": "provider",
@@ -147,7 +191,7 @@ The columns are : `id`, `provider`, `title`, `views`.
 
 ```json
 {
-    "n_row_per_page": 10,
+    "page_n_row": 10,
     "page_no": 42,
     "sort_col": "title",
     "sort_order": 1,
@@ -155,3 +199,36 @@ The columns are : `id`, `provider`, `title`, `views`.
     "filter_val": "XXX",
 }
 ```
+
+**Top 20 most watched TV shows :**
+
+```json
+{
+    "page_n_row": 20,
+    "sort_col": "views",
+    "sort_order": -1,
+}
+```
+
+
+License
+-------
+
+This project is released under Apache License 2.0, don't hesitate to read
+the `LICENSE` file for further informations.
+
+
+Contributing to this tool
+-------------------------
+
+We absolutely appreciate patches, feel free to contribute
+directly on the GitHub project.
+
+Repositories / Development website / Bug Tracker:
+
+https://github.com/dctremblay/csv2rest
+
+Do not hesitate to join us and post comments, suggestions,
+questions and general feedback directly on the issues tracker.
+
+Author : David Côté-Tremblay <imdc.technologies@gmail.com>
