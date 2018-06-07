@@ -216,6 +216,22 @@ The columns are : `id`, `provider`, `title`, `views`.
 ```
 
 
+How to run tests
+----------------
+
+Just go in the package folder and write this command :
+
+```bash
+python3 -m unittest
+```
+
+Before commiting, you will need to ensure linting is ok :
+
+```bash
+flake8 .
+```
+
+
 License
 -------
 
