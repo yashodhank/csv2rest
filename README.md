@@ -113,14 +113,13 @@ the CSV file format and its columns types.
         },
         {
             "name": "title",
-            "type": "string",
-            "strip": true
+            "type": "string"
         },
         {
             "name": "views",
             "type": "integer"
         }
-    ],
+    ]
 }
 ```
 
@@ -129,11 +128,6 @@ the CSV file. The `type` value can be `disabled`, `integer` or `string`.
 
 If the `type` is set to `disabled`, no other options, such as `name` is
 required. This will cause this field to be completely ignored.
-
-When the type of the column is a `string`, the `strip` parameter is to trim
-both the begin and the end of the string if needed. Is optional and if not
-specified, defaults at `false`. Enabling this feature can greatly decrease
-performances.
 
 We recommend using a `string` type when the column is a hash, because its
 way lighter to compare few `char` than to compare a whole n bits hash.
