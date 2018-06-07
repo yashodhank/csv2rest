@@ -21,6 +21,9 @@ import simplejson as json
 schema = {
     'type': 'object',
     'properties': {
+        'encoding': {
+            'type': 'string'
+        },
         'has_header': {
             'type': 'boolean'
         },
@@ -32,7 +35,7 @@ schema = {
         },
     },
     'required': [
-        'has_header', 'delimiter', 'quotechar',
+        'encoding', 'has_header', 'delimiter', 'quotechar',
     ]
 }
 

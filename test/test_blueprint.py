@@ -20,15 +20,18 @@ from csv2rest import blueprint
 
 invalid_blueprints = [
     {
+        "encoding": "iso-8859-1",
         "has_header": True,
         "delimiter": ",",
     },
     {
+        "encoding": "iso-8859-1",
         "has_header": True,
         "delimiter": ",",
         "quotechar": "",
     },
     {
+        "encoding": "iso-8859-1",
         "has_header": "yeah",
         "delimiter": ",",
         "quotechar": "",
@@ -40,6 +43,7 @@ invalid_blueprints = [
         ],
     },
     {
+        "encoding": "iso-8859-1",
         "has_header": True,
         "delimiter": ",",
         "quotechar": "",
@@ -51,6 +55,7 @@ invalid_blueprints = [
         ],
     },
     {
+        "encoding": "iso-8859-1",
         "has_header": True,
         "delimiter": ",",
         "quotechar": "",
@@ -59,11 +64,23 @@ invalid_blueprints = [
                 "name": "id",
             },
         ],
+    },
+    {
+        "has_header": True,
+        "delimiter": ",",
+        "quotechar": "",
+        "columns": [
+            {
+                "name": "id",
+                "type": "string"
+            },
+        ],
     }
 ]
 
 valid_blueprints = [
     {
+        "encoding": "iso-8859-1",
         "has_header": True,
         "delimiter": ",",
         "quotechar": "",
