@@ -99,6 +99,7 @@ the CSV file format and its columns types.
 
 ```json
 {
+    "encoding": "iso-8859-1",
     "has_header": true,
     "delimiter": ",",
     "quotechar": "",
