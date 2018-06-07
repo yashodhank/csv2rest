@@ -56,9 +56,12 @@ column_schema = {
 
 
 def parse(path):
-    f = open(path, 'r')
-    blueprint = json.loads(f.read())
-    f.close()
+    with open(path, 'r') as f:
+        contents = f.read()
+    try:
+        blueprint = json.loads(contents)
+    except json.errors.JSONDecodeError as e:
+        raise SyntaxError("{} in {}".format(e, path))
     validate(blueprint)
     return blueprint
 

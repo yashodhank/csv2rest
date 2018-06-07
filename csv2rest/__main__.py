@@ -2,6 +2,8 @@
 import argparse
 import sys
 import signal
+import blueprint
+import rest
 
 #
 # Copyright 2018  David Côté-Tremblay
@@ -33,7 +35,7 @@ def parse_args():
         help="Path of the blueprint Yaml about the CSV"
     )
     parser.add_argument(
-        'socketfile', type=argparse.FileType('a+'),
+        'socketfile', type=argparse.FileType('w+'),
         help="Path where to create the socket file"
     )
     return parser.parse_args()
@@ -41,6 +43,11 @@ def parse_args():
 
 def main():
     args = parse_args()
+    try:
+        bp = blueprint.parse(args.blueprint.name)
+    except SyntaxError as e:
+        print(e, file=sys.stderr)
+        return 1
     return 0
 
 
@@ -50,4 +57,5 @@ def signal_handler(signal, frame):
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
-    sys.exit(main())
+    return_code = main()
+    sys.exit(return_code)
