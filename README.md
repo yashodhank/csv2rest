@@ -3,19 +3,17 @@ CSV to REST API
 
 Pass a CSV file to the program as argument, and the program results in a nice
 REST API which can paginate, order and filter data.
-Plus it supports redundancy-type high availability using a reverse proxy,
-fallbacking to different socket files.
 
 ```
 $ csv2rest -h
-usage: csv2rest [-h] csv blueprint socketfile
+usage: csv2rest [-h] csv blueprint port
 
 Create a simple REST API socket file from a CSV file.
 
 positional arguments:
   csv         Path of the CSV to open
-  blueprint   Path of the blueprint JSON file about the CSV
-  socketfile  Path where to create the socket file
+  blueprint   Path of the blueprint Yaml about the CSV
+  port        Port to open for the testing HTTP server
 
 optional arguments:
   -h, --help  show this help message and exit
@@ -26,7 +24,10 @@ Preamble
 --------
 
 I made this project as a proof of skill for a job interview.
-It can be considered as production ready.
+It just need WSGI implementation then it can be considered as production ready.
+
+Checkout `README` from commit `540c5bc5c8e63a569006379a9432885646e7f444` for
+production features (WSGI socket file, redundancy, page limiting, etc..).
 
 I applied for a Java developer job, but we had the choice of the language,
 so I decided to write this project in Python3 since its a very simple project.
@@ -37,23 +38,16 @@ As required, I respected all those points :
 - Simplicity of the API (only 6 query parameters !)
 - Nice technological choices (Python and generic libraries)
 - Overall quality (elegant code and flake8)
-- Performance (C bindings for sorting and filtering)
-- Tests (unit tests and socketfile integration tests)
+- Performance (chained comprehension list for sorting and filtering)
+- Tests (some unit tests)
 - Documentation (this friendly README filled with examples)
 - Not using a real database engine
-
-And the exam was missing a point that I consider important :
-
-- Security
-  - High availability
-  - Pagination limiting
-  - Rate limiting (`limit_req` from Nginx reverse-proxy)
 
 
 Installation procedure
 ----------------------
 
-Python3.6 is required since this project is targeted for production systems
+Python3.6 is required since this project is targeted for servers systems
 and not directly for consumers.
 
 Just type this simple command then you're ready to use `csv2rest`.
@@ -66,29 +60,17 @@ pip3 install git+https://github.com/dctremblay/csv2rest.git@master
 Launch the server
 -----------------
 
-This is the command how to start the REST server in a UNIX socket file which
-can be later reverse-proxied using Nginx and such.
+This is the command how to start the REST server in a local port :
 
 ```bash
 csv2rest \
     ~/tvshow_views.csv \
     ~/tvshow_views.json \
-    ~/tvshow_views.sock
+    4242
 ```
 
 All the program positional arguments are shown in this example,
-which are simply :`csv`, `blueprint` and `socket`.
-
-
-High availability
------------------
-
-If the CSV changes for example every day, you will need to restart the
-csv2rest process, causing a downtime.
-
-To avoid that issue, what you can do is to run two instances of the csv2rest
-process, the first socketfile being fallbacked by the second process socketfile
-by the reverse proxy server.
+which are simply :`csv`, `blueprint` and `port`.
 
 
 Editing the blueprint

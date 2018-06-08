@@ -36,8 +36,8 @@ def parse_args():
         help="Path of the blueprint Yaml about the CSV"
     )
     parser.add_argument(
-        'socketfile', type=argparse.FileType('w+'),
-        help="Path where to create the socket file"
+        'port', type=int,
+        help="Port to open for the testing HTTP server"
     )
     return parser.parse_args()
 
@@ -52,7 +52,7 @@ def main():
     try:
         bp = blueprint.parse(blueprint_path)
         CsvFile(csv_path, bp).close()  # just validating
-        service.run(csv_path, bp)
+        service.run(csv_path, bp, args.port, debug=True)
         return 0
     except known_exceptions as e:
         print(e, file=sys.stderr)
