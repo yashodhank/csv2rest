@@ -96,7 +96,6 @@ valid_blueprints = [
             {
                 "name": "title",
                 "type": "string",
-                "strip": True
             },
             {
                 "name": "views",
