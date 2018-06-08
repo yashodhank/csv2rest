@@ -137,6 +137,9 @@ way lighter to compare few `char` than to compare a whole n bits hash.
 Querying REST API
 -----------------
 
+The presented parameters for the requests are GET parameters that you must
+put into the URL. (ex: `/?page_n_row=10&page_no=4`)
+
 ### Pagination
 
 `page_n_row` is an integer which is optional and defaults at `1`.
@@ -175,7 +178,12 @@ and the number of views during the previous day.
 
 The columns are : `id`, `provider`, `title`, `views`.
 
+Those are represented as JSON format, but its only for human readable
+example purpose. For real they are GET parameters (as also shown).
+
 **Top 10 most watched TV shows for a specific provider :**
+
+`/?page_n_row=10&sort_col=views&sort_order=-1&filter_col=provider&filter_val=XXX`
 
 ```json
 {
@@ -189,6 +197,8 @@ The columns are : `id`, `provider`, `title`, `views`.
 
 **TV shows in alphabetical order for a specific provider using pagination :**
 
+`/?page_n_row=10&page_no=42&sort_col=title&sort_order=1&filter_col=provider&filter_val=XXX`
+
 ```json
 {
     "page_n_row": 10,
@@ -201,6 +211,8 @@ The columns are : `id`, `provider`, `title`, `views`.
 ```
 
 **Top 20 most watched TV shows :**
+
+`/?page_n_row=20&sort_col=views&sort_order=-1`
 
 ```json
 {

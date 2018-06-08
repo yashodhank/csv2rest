@@ -3,7 +3,8 @@ import argparse
 import sys
 import signal
 import blueprint
-import rest
+import service
+from csvfile import CsvFile
 
 #
 # Copyright 2018  David Côté-Tremblay
@@ -43,12 +44,19 @@ def parse_args():
 
 def main():
     args = parse_args()
+    known_exceptions = (
+        SyntaxError, LookupError, UnicodeDecodeError
+    )
+    blueprint_path = args.blueprint.name
+    csv_path = args.csv.name
     try:
-        bp = blueprint.parse(args.blueprint.name)
-    except SyntaxError as e:
+        bp = blueprint.parse(blueprint_path)
+        CsvFile(csv_path, bp).close()  # just validating
+        service.run(csv_path, bp)
+        return 0
+    except known_exceptions as e:
         print(e, file=sys.stderr)
         return 1
-    return 0
 
 
 def signal_handler(signal, frame):
