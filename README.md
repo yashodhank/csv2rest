@@ -127,8 +127,8 @@ the CSV file format and its columns types.
 The columns orders in the blueprint must represent the same order as of inside
 the CSV file. The `type` value can be `disabled`, `integer` or `string`.
 
-If the `type` is set to `disabled`, no other options, such as `name` is
-required. This will cause this field to be completely ignored.
+If the `type` is set to `disabled`, this will cause this field to be hidden
+in the output to client. It's still required to specify a unique field name.
 
 We recommend using a `string` type when the column is a hash, because its
 way lighter to compare few `char` than to compare a whole n bits hash.
