@@ -84,7 +84,8 @@ Launch the server
 This is the command how to start the REST server in a local port :
 
 ```bash
-csv2rest \
+pipenv shell
+python3 csv2rest \
     ~/tvshow_views.csv \
     ~/tvshow_views.json \
     4242
