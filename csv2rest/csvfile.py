@@ -1,4 +1,5 @@
 import csv
+import blueprint
 
 #
 # Copyright 2018  David Côté-Tremblay
@@ -54,6 +55,31 @@ class CsvFile():
 
     def query(self, request):
         reader = self.reader()
+        if request['filter_col']:
+            filter_col_index = blueprint.find_index_of_col(
+                self.__blueprint, request['filter_col']
+            )
+            reader = [
+                row for row in reader if (
+                    row[filter_col_index] == request['filter_val']
+                    if request['filter_val']
+                    else row[filter_col_index] != ''
+                )
+            ]
+        if request['sort_col'] and request['sort_order']:
+            sort_col_index = blueprint.find_index_of_col(
+                self.__blueprint, request['sort_col']
+            )
+            sort_col = self.__blueprint['columns'][sort_col_index]
+            reader = sorted(
+                reader,
+                key=lambda row: (
+                    int(row[sort_col_index])
+                    if sort_col['type'] == 'integer'
+                    else row[sort_col_index]
+                ),
+                reverse=(request['sort_order'] == -1)
+            )
         return reader
 
     def close(self):
