@@ -13,7 +13,7 @@ Create a simple REST API socket file from a CSV file.
 
 positional arguments:
   csv         Path of the CSV to open
-  blueprint   Path of the blueprint Yaml about the CSV
+  blueprint   Path of the blueprint JSON file about the CSV
   port        Port to open for the testing HTTP server
 
 optional arguments:

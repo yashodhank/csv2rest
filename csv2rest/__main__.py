@@ -33,7 +33,7 @@ def parse_args():
     )
     parser.add_argument(
         'blueprint', type=argparse.FileType('r'),
-        help="Path of the blueprint Yaml about the CSV"
+        help="Path of the blueprint JSON file about the CSV"
     )
     parser.add_argument(
         'port', type=int,
