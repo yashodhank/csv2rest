@@ -55,6 +55,13 @@ column_schema = {
 }
 
 
+def find_index_of_col(blueprint, name):
+    for i, col in enumerate(blueprint['columns']):
+        if col['name'] == name:
+            return i
+    raise LookupError("Can't find column '{}' in blueprint".format(name))
+
+
 def parse(path):
     with open(path, 'r') as f:
         contents = f.read()
