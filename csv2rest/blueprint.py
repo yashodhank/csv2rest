@@ -48,9 +48,6 @@ column_schema = {
         'type': {
             'type': 'string'
         },
-        'strip': {
-            'type': 'boolean'
-        },
     },
     'required': [
         'name', 'type'
