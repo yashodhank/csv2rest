@@ -5,6 +5,7 @@ Pass a CSV file to the program as argument, and the program results in a nice
 REST API which can paginate, order and filter data.
 
 ```
+$ pipenv shell
 $ csv2rest -h
 usage: csv2rest [-h] csv blueprint port
 
@@ -50,10 +51,30 @@ Installation procedure
 Python3.6 is required since this project is targeted for servers systems
 and not directly for consumers.
 
-Just type this simple command then you're ready to use `csv2rest`.
+You will first need to ensure that pipenv is installed :
 
 ```bash
-pip3 install git+https://github.com/dctremblay/csv2rest.git@master
+pip3 install pipenv
+```
+
+Fetch the repository :
+
+```bash
+git clone https://github.com/dctremblay/csv2rest.git
+cd csv2rest
+```
+
+Initialize pipenv and dependencies :
+
+```bash
+pipenv install
+```
+
+Do not forget to enter in the env shell :
+
+```bash
+pipenv shell
+python3 csv2rest
 ```
 
 
@@ -207,6 +228,13 @@ example purpose. For real they are GET parameters (as also shown).
 
 How to run tests
 ----------------
+
+
+Do not forget to enter in the env shell :
+
+```
+pipenv shell
+```
 
 Just go in the package folder and write this command :
 
