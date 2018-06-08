@@ -43,10 +43,15 @@ class Resource(rest.Resource):
         return flask.make_response(response)
 
 
-def run(csv_path, blueprint):
+def run(csv_path, blueprint, socket, debug=False):
     app = flask.Flask(__name__)
     api = rest.Api(app)
     Resource.csv_path = csv_path
     Resource.blueprint = blueprint
     api.add_resource(Resource, '/')
-    app.run(port='5002')
+    if debug:
+        app.run(port=socket, debug=True)
+    else:
+        raise NotImplementedError(
+            "Production features will be implemented once I get the job"
+        )
