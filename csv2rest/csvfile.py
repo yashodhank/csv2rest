@@ -62,6 +62,7 @@ class CsvFile():
         return reader
 
     def query(self, request):
+        # comprehension list chaining festival (filter, order, paginate)
         reader = self.reader()
         if request['filter_col']:
             filter_col_index = blueprint.find_index_of_col(
