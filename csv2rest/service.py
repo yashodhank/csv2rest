@@ -1,6 +1,7 @@
 import flask
 import request
 import flask_restful as rest
+import traceback
 from csvfile import CsvFile
 
 #
@@ -29,12 +30,15 @@ class Resource(rest.Resource):
         try:
             args = request.parse(flask.request.args, blueprint)
             csv = CsvFile(csv_path, blueprint)
-            lines = list(csv.query(args))
+            lines = list([
+                csv.cast_row(row) for row in csv.query(args)
+            ])
             csv.close()
             response = flask.jsonify({'data': lines}), 200
         except ValueError as e:
             response = flask.jsonify({'message': str(e)}), 400
         except Exception as e:
+            traceback.print_exc()
             response = flask.jsonify({'message': str(e)}), 500
         return flask.make_response(response)
 
