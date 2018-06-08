@@ -43,6 +43,13 @@ class CsvFile():
                 "{} won't decode CSV ({})".format(err_msg_pre(), e)
             )
 
+    def cast_row(self, row):
+        return {
+            col['name']: (int(row[i]) if col['type'] == 'integer' else row[i])
+            for i, col in enumerate(self.__blueprint['columns'])
+            if col['type'] != 'disabled'
+        }
+
     def reader(self):
         kwargs = {}
         kwargs['delimiter'] = self.__blueprint['delimiter']
