@@ -1,5 +1,6 @@
 import csv
 import blueprint
+import util
 
 #
 # Copyright 2018  David Côté-Tremblay
@@ -87,7 +88,9 @@ class CsvFile():
                 ),
                 reverse=(request['sort_order'] == -1)
             )
-        return reader
+        return util.paginated_reader(
+            reader, request['page_no'], request['page_n_row']
+        )
 
     def close(self):
         self.__file.close()
