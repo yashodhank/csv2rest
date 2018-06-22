@@ -1,0 +1,4 @@
+jsonschema
+simplejson
+flask-restful
+flake8
